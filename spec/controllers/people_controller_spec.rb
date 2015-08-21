@@ -5,6 +5,7 @@ RSpec.describe PeopleController, type: :controller do
   }
 
   let(:invalid_attributes) {
+    {first_name: nil, last_name: nil}
   }
   let(:valid_session) { {} }
 
