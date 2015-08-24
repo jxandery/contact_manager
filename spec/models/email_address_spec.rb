@@ -12,4 +12,9 @@ RSpec.describe EmailAddress, type: :model do
     expect(email_address).not_to be_valid
   end
 
+  it 'is invalid without a person_id' do
+    email_address.person_id = nil
+    expect(email_address).not_to be_valid
+  end
+
 end
