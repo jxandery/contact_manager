@@ -17,6 +17,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'spring', '~> 1.3.6'
   gem 'capybara'
+  gem 'launchy'
 end
 
 group :production do
