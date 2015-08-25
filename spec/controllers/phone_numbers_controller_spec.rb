@@ -1,11 +1,11 @@
 require 'rails_helper'
 RSpec.describe PhoneNumbersController, type: :controller do
   let(:valid_attributes) {
-    {number: "My String", person_id: 1}
+    {number: "My String", contact_id: 1, contact_type: 'Person'}
   }
 
   let(:invalid_attributes) {
-    {number: nil, person_id: nil}
+    {number: nil, contact_id: nil, contact_type: nil}
   }
 
   let(:valid_session) { {} }
@@ -44,7 +44,7 @@ RSpec.describe PhoneNumbersController, type: :controller do
   describe "POST #create" do
     context "with valid params" do
       let(:alice) {Person.create(first_name: 'Alice', last_name: 'Smith')}
-      let(:valid_attributes) {{number: '555-8888', person_id: alice.id}}
+      let(:valid_attributes) {{number: '555-8888', contact_id: alice.id, contact_type: 'Person'}}
 
       it "creates a new PhoneNumber" do
         expect {
@@ -80,15 +80,15 @@ RSpec.describe PhoneNumbersController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:bob) { Person.create(first_name: 'Bob', last_name: 'Jones') }
-      let(:valid_attributes) { {number: '555-5678', person_id: bob.id} }
-      let(:new_attributes) { {number: 'MyNewString', person_id: bob.id} }
+      let(:valid_attributes) { {number: '555-5678', contact_id: bob.id, contact_type: 'Person'} }
+      let(:new_attributes) { {number: 'MyNewString', contact_id: bob.id, contact_type: 'Person'} }
 
       it "updates the requested phone_number" do
         phone_number = PhoneNumber.create! valid_attributes
         put :update, {:id => phone_number.to_param, :phone_number => new_attributes}, valid_session
         phone_number.reload
         expect(phone_number.number).to eq("MyNewString")
-        expect(phone_number.person_id).to eq(bob.id)
+        expect(phone_number.contact_id).to eq(bob.id)
       end
 
       it "assigns the requested phone_number as @phone_number" do
@@ -121,21 +121,20 @@ RSpec.describe PhoneNumbersController, type: :controller do
 
   describe "DELETE #destroy" do
     let(:bob) { Person.create(first_name: 'Bob', last_name: 'Jones') }
-    let(:valid_attributes) { {number: '555-5678', person_id: bob.id} }
-    let(:new_attributes) { {number: 'MyNewString', person_id: bob.id} }
+    let(:valid_attributes) { {number: '555-5678', contact_id: bob.id, contact_type: 'Person'} }
+    let(:new_attributes) { {number: 'MyNewString', contact_id: bob.id, contact_type: 'Person'} }
 
     it "destroys the requested phone_number" do
-      phone_number = bob.phone_numbers.create! valid_attributes
+      phone_number = PhoneNumber.create! valid_attributes
       expect {
         delete :destroy, {:id => phone_number.to_param}, valid_session
-      }.to change(bob.phone_numbers, :count).by(-1)
+      }.to change(PhoneNumber, :count).by(-1)
     end
 
     it "redirects to the phone_numbers list" do
-      phone_number = bob.phone_numbers.create! valid_attributes
+      phone_number = PhoneNumber.create! valid_attributes
       delete :destroy, {:id => phone_number.to_param}, valid_session
       expect(response).to redirect_to(bob)
     end
   end
-
 end
