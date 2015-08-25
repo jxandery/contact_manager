@@ -79,8 +79,9 @@ RSpec.describe EmailAddressesController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
+      let(:bobby) {Person.create!(first_name: 'Bobby', last_name: 'joe')}
       let(:new_attributes) {
-        {address: "revised@email.com", person_id: 22}
+        {address: "revised@email.com", person_id: bobby.id}
       }
 
       it "updates the requested email_address" do
@@ -96,10 +97,10 @@ RSpec.describe EmailAddressesController, type: :controller do
         expect(assigns(:email_address)).to eq(email_address)
       end
 
-      it "redirects to the email_address" do
+      it "redirects to the email_address's person" do
         email_address = EmailAddress.create! valid_attributes
         put :update, {:id => email_address.to_param, :email_address => valid_attributes}, valid_session
-        expect(response).to redirect_to(email_address)
+        expect(response).to redirect_to(email_address.person)
       end
     end
 

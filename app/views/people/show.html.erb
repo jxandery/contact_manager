@@ -12,7 +12,7 @@
 
 <ul>
   <% @person.phone_numbers.each do |phone|%>
-    <li> <%= phone.number %> <%= link_to('edit', edit_phone_number_path(phone))%> | <%= link_to 'Delete', phone_number_path(phone.id), :method => 'delete' %> </li>
+    <li> <%= phone.number %> <%= link_to('edit phone number', edit_phone_number_path(phone))%> | <%= link_to 'delete phone number', phone_number_path(phone.id), :method => 'delete' %> </li>
   <% end %>
 </ul>
 
@@ -24,7 +24,7 @@
 
 <ul>
   <% @person.email_addresses.each do |email| %>
-    <li> <%= email.address %> <%= link_to('edit', edit_email_address_path(email))%> | <%= link_to 'Delete', email_address_path(email.id), :method => 'delete' %> </li>
+    <li> <%= email.address %> <%= link_to('edit email address', edit_email_address_path(email))%> | <%= link_to 'delete email address', email_address_path(email.id), :method => 'delete' %> </li>
   <% end %>
 </ul>
 
