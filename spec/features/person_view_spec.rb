@@ -104,6 +104,12 @@ describe 'the person view', type: :feature do
       expect(current_path).to eq(person_path(person))
       expect(page).to have_content('revised_email@example.com')
     end
+
+    it 'has an delete email address link' do
+      person.email_addresses.each do |email|
+        expect(page).to have_link('delete email address', href: email_address_path(email))
+      end
+    end
   end
 
 end
