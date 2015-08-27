@@ -18,7 +18,7 @@ RSpec.describe Company, type: :model do
   end
 
   it 'responds with its email addresses after its created' do
-    email_address = company.email_address.build(address: 'what@thewhat.com')
+    email_address = company.email_addresses.build(address: 'what@thewhat.com')
     expect(email_address.address).to eq('what@thewhat.com')
   end
 end
