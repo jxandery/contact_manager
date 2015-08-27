@@ -4,11 +4,11 @@ RSpec.describe EmailAddressesController, type: :controller do
 
   let(:bob) {Person.create!(first_name: 'Bob', last_name: 'Smith')}
   let(:valid_attributes) {
-    {address: "yo@example.com", person_id: bob.id}
+    {address: "yo@example.com", contact_id: bob.id, contact_type: 'Person'}
   }
 
   let(:invalid_attributes) {
-    {address: nil, person_id: nil}
+    {address: nil, contact_id: nil, contact_type: nil}
   }
 
   let(:valid_session) { {} }
@@ -60,7 +60,7 @@ RSpec.describe EmailAddressesController, type: :controller do
 
       it "redirects to the created email_address" do
         post :create, {:email_address => valid_attributes}, valid_session
-        expect(response).to redirect_to(EmailAddress.last.person)
+        expect(response).to redirect_to(EmailAddress.last.contact)
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe EmailAddressesController, type: :controller do
     context "with valid params" do
       let(:bobby) {Person.create!(first_name: 'Bobby', last_name: 'joe')}
       let(:new_attributes) {
-        {address: "revised@email.com", person_id: bobby.id}
+        {address: "revised@email.com", contact_id: bobby.id, contact_type: 'Person'}
       }
 
       it "updates the requested email_address" do
@@ -97,10 +97,10 @@ RSpec.describe EmailAddressesController, type: :controller do
         expect(assigns(:email_address)).to eq(email_address)
       end
 
-      it "redirects to the email_address's person" do
+      it "redirects to the email_address's contact" do
         email_address = EmailAddress.create! valid_attributes
         put :update, {:id => email_address.to_param, :email_address => valid_attributes}, valid_session
-        expect(response).to redirect_to(email_address.person)
+        expect(response).to redirect_to(email_address.contact)
       end
     end
 
@@ -127,10 +127,10 @@ RSpec.describe EmailAddressesController, type: :controller do
       }.to change(EmailAddress, :count).by(-1)
     end
 
-    it "redirects to the person" do
+    it "redirects to the contact" do
       email_address = EmailAddress.create! valid_attributes
       delete :destroy, {:id => email_address.to_param}, valid_session
-      expect(response).to redirect_to(email_address.person)
+      expect(response).to redirect_to(email_address.contact)
     end
   end
 
