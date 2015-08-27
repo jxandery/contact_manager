@@ -64,4 +64,53 @@ describe 'the person view', type: :feature do
     end
   end
 
+  describe 'email addresses', type: :feature do
+    before(:each) do
+      company.email_addresses.create!(address: 'you@example.com', contact_id: company.id, contact_type: 'Person')
+      company.email_addresses.create!(address: 'me@example.com', contact_id: company.id, contact_type: 'Person')
+
+      visit company_path(company)
+    end
+
+    it 'has a list item for each email address' do
+      company.email_addresses.each do |email|
+        expect(page).to have_selector('li', text: email.address)
+      end
+    end
+
+    it 'has an add email address link' do
+      expect(page).to have_link('Add email address', href: new_email_address_path(contact_id: company.id, contact_type: 'Company'))
+    end
+
+    it 'adds email address' do
+      page.click_link('Add email address')
+      fill_in('Address', with: 'add_email@example.com')
+      click_button('Create Email address')
+
+      expect(current_path).to eq(company_path(company))
+      expect(page).to have_content('add_email@example.com')
+    end
+
+    it 'has an edit email address link' do
+      company.email_addresses.each do |email|
+        expect(page).to have_link('edit email address', href: edit_email_address_path(email))
+      end
+    end
+
+    it 'edits email address' do
+      first(:link, 'edit email address').click
+      fill_in('Address', with: 'revised_email@example.com')
+      click_button('Update Email address')
+
+      expect(current_path).to eq(company_path(company))
+      expect(page).to have_content('revised_email@example.com')
+    end
+
+    it 'has an delete email address link' do
+      company.email_addresses.each do |email|
+        expect(page).to have_link('delete email address', href: email_address_path(email))
+      end
+    end
+  end
+
 end
