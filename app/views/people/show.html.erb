@@ -18,11 +18,7 @@
 <%= link_to 'Delete', person_path(@person), :method => 'delete' %>
 <%= link_to 'Back', people_path %>
 
-<ul>
-  <% @person.email_addresses.each do |email| %>
-    <li> <%= email.address %> <%= link_to('edit email address', edit_email_address_path(email))%> | <%= link_to 'delete email address', email_address_path(email.id), :method => 'delete' %> </li>
-  <% end %>
-</ul>
+<%= render 'email_addresses/email_addresses', :email_addresses => @person.email_addresses %>
 
 <%= link_to "Add email address", new_email_address_path(contact_id: @person.id, contact_type: 'Person') %>
 
